@@ -1,0 +1,65 @@
+# --- Python / Django ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+db.sqlite3
+*.mo
+*.pot
+
+# --- Django specific ---
+media/
+staticfiles/
+local_settings.py
+
+# --- Migrations (if you want to ignore generated files) ---
+*/migrations/__pycache__/
+*/migrations/*.py[cod]
+*/migrations/*.py~
+
+# --- Environment & Secrets ---
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# --- Poetry ---
+poetry.lock
+
+# --- Docker ---
+*.pid
+*.sock
+docker-compose.override.yml
+*.tar
+__docker__/
+postgres_data/
+
+# --- Database dumps ---
+*.sql
+*.dump
+*.pgsql
+
+# --- Node (if using Tailwind or frontend assets) ---
+node_modules/
+*.tsbuildinfo
+
+# --- VSCode / JetBrains / Editor junk ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- Testing / Coverage ---
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# --- System / OS ---
+.DS_Store
+Thumbs.db
