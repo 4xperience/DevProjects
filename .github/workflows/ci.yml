@@ -15,7 +15,7 @@ jobs:
         image: postgres:16
         env:
           POSTGRES_DB: booking_db
-          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
+          POSTGRES_USER: hotel_user
           POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         ports:
           - 5432:5432
