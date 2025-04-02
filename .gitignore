@@ -21,7 +21,6 @@ local_settings.py
 
 # --- Environment & Secrets ---
 .env
-.env.*
 *.key
 *.pem
 secrets/

@@ -46,10 +46,13 @@ jobs:
           poetry config virtualenvs.create false
 
       - name: Install dependencies
+        working-directory: booking_service
         run: poetry install --no-interaction --no-ansi
 
       - name: Run migrations
+        working-directory: booking_service
         run: python src/manage.py migrate
 
       - name: Run tests
+        working-directory: booking_service
         run: python src/manage.py test
