@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     DATABASE_PASSWORD: str = os.getenv("DATABASE_PASSWORD")
     DATABASE_URL: str = os.getenv("DATABASE_URL")
     ALLOWED_HOSTS: str = os.getenv("ALLOWED_HOSTS")
+    DATABASE_HOST: str = os.getenv("DATABASE_HOST", "db")
+
     
 
 settings = Settings()
@@ -71,7 +73,7 @@ DATABASES = {
         'NAME': settings.DATABASE_NAME,
         'USER': settings.DATABASE_USER,
         'PASSWORD': settings.DATABASE_PASSWORD,
-        'HOST': 'db',
+        'HOST': settings.DATABASE_HOST,
         'PORT': '5432'
     }
 }
