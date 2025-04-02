@@ -25,6 +25,8 @@ jobs:
     env:
       DEBUG: false
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DATABASE_URL: postgres://hotel_user:${{ secrets.DATABASE_PASSWORD }}@localhost:5432/booking_db
+      ALLOWED_HOSTS: localhost,127.0.0.1
       DATABASE_NAME: booking_db
       DATABASE_USER: ${{ secrets.DATABASE_USER }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
