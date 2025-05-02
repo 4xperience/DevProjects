@@ -38,30 +38,30 @@ jobs:
 
     env:
       SESSION_SECRET: ${{ secrets.FASTAPI_SESSION_SECRET }}
-
       POSTGRES_DB: delivery_test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_HOST: localhost
       POSTGRES_PORT: "5432"
-
       REDIS_URL: redis://localhost:6379
       MONGO_URL: mongodb://localhost:27017
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "poetry"
+          cache: poetry
 
-      - name: Install Poetry via pip and add to PATH
-        run: |
-          pip install poetry==1.8.2
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          poetry config virtualenvs.in-project true
+      - name: Install Poetry (official action)
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "1.8.2"
+
+      - name: Confirm Poetry is available
+        run: poetry --version
 
       - name: Generate .env for application
         run: |
