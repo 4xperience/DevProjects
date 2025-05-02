@@ -54,15 +54,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "poetry"
 
-      - name: Install Poetry
+      - name: Install Poetry via pip
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install poetry
           poetry config virtualenvs.in-project true
 
-      - name: Generate .env for application
+      - name: Check poetry version
+        run: poetry --version
+
+      - name: Generate .env
         run: |
           echo "SESSION_SECRET=${SESSION_SECRET:-dummy-secret}" > .env
           echo "POSTGRES_DB=${POSTGRES_DB}" >> .env
@@ -76,12 +78,12 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-ansi
 
-      - name: Run database migrations & seed parcel types
+      - name: Run migrations & seed
         run: |
           poetry run alembic upgrade head
           poetry run python -m src.db.init_data
 
-      - name: Lint (ruff)
+      - name: Lint
         run: poetry run ruff check . --output-format=github
 
       - name: Run tests
