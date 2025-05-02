@@ -55,16 +55,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Poetry via pip
+      - name: Install Poetry
         run: |
           python -m pip install --upgrade pip
           pip install poetry
           poetry config virtualenvs.in-project true
 
-      - name: Check poetry version
-        run: poetry --version
-
-      - name: Generate .env
+      - name: Generate .env file
+        working-directory: delivery_service
         run: |
           echo "SESSION_SECRET=${SESSION_SECRET:-dummy-secret}" > .env
           echo "POSTGRES_DB=${POSTGRES_DB}" >> .env
@@ -76,15 +74,19 @@ jobs:
           echo "MONGO_URL=${MONGO_URL}" >> .env
 
       - name: Install dependencies
+        working-directory: delivery_service
         run: poetry install --no-interaction --no-ansi
 
       - name: Run migrations & seed
+        working-directory: delivery_service
         run: |
           poetry run alembic upgrade head
           poetry run python -m src.db.init_data
 
-      - name: Lint
+      - name: Lint with ruff
+        working-directory: delivery_service
         run: poetry run ruff check . --output-format=github
 
       - name: Run tests
+        working-directory: delivery_service
         run: poetry run pytest -q
