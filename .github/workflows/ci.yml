@@ -63,9 +63,10 @@ jobs:
           cache: "poetry"
 
       - name: Install Poetry
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: '1.8.2'
+        run: |
+          pip install poetry==1.8.2
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
 
 
       - name: Generate .env for application
