@@ -2,9 +2,9 @@ name: FastAPI CI
 
 on:
   push:
-    branches: ['**']
+    branches: [ "**" ]
   pull_request:
-    branches: ['**']
+    branches: [ "**" ]
 
 jobs:
   test:
@@ -20,22 +20,21 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres -d delivery_test"
-          --health-interval=5s --health-timeout=5s --health-retries=10
+          --health-cmd="pg_isready -U postgres -d delivery_test" --health-interval=5s --health-timeout=5s --health-retries=10
 
       redis:
         image: redis:7
-        ports: ['6379:6379']
+        ports:
+          - 6379:6379
         options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=5s --health-timeout=3s --health-retries=5
+          --health-cmd="redis-cli ping" --health-interval=5s --health-timeout=3s --health-retries=5
 
       mongo:
         image: mongo:6
-        ports: ['27017:27017']
+        ports:
+          - 27017:27017
         options: >-
-          --health-cmd="mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1"
-          --health-interval=10s --health-timeout=5s --health-retries=5
+          --health-cmd="mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep 1" --health-interval=10s --health-timeout=5s --health-retries=5
 
     env:
       SESSION_SECRET: ${{ secrets.FASTAPI_SESSION_SECRET }}
@@ -43,31 +42,29 @@ jobs:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_HOST: localhost
-      POSTGRES_PORT: '5432'
+      POSTGRES_PORT: "5432"
       REDIS_URL: redis://localhost:6379
       MONGO_URL: mongodb://localhost:27017
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: poetry           # кэш для Poetry‑env
+          python-version: "3.12"
+          cache: "poetry"
 
       - name: Install Poetry
         run: |
+          pip install --upgrade pip
           pip install poetry
-          poetry config virtualenvs.create false
-
-      # Проверяем, что Poetry есть (уже в $PATH)
-      - name: Poetry version
-        run: poetry --version
+          poetry config virtualenvs.in-project true
 
       - name: Generate .env for application
         run: |
-          echo "SESSION_SECRET=${SESSION_SECRET:-dummy-secret}" >> .env
+          echo "SESSION_SECRET=${SESSION_SECRET:-dummy-secret}" > .env
           echo "POSTGRES_DB=${POSTGRES_DB}" >> .env
           echo "POSTGRES_USER=${POSTGRES_USER}" >> .env
           echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> .env
@@ -75,7 +72,6 @@ jobs:
           echo "POSTGRES_PORT=${POSTGRES_PORT}" >> .env
           echo "REDIS_URL=${REDIS_URL}" >> .env
           echo "MONGO_URL=${MONGO_URL}" >> .env
-
 
       - name: Install dependencies
         run: poetry install --no-interaction --no-ansi
