@@ -56,12 +56,10 @@ jobs:
           python-version: '3.12'
           cache: poetry           # кэш для Poetry‑env
 
-      # ➜ корректная установка Poetry
       - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.8.2
-          virtualenvs-in-project: true
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
 
       # Проверяем, что Poetry есть (уже в $PATH)
       - name: Poetry version
