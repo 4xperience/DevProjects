@@ -1,4 +1,4 @@
-name: CI
+name: FastAPI CI
 
 on:
   push:
@@ -51,23 +51,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install system libraries
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libpq5
-
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: "poetry"
 
-      - name: Install Poetry
+      - name: Install Poetry via pip and add to PATH
         run: |
           pip install poetry==1.8.2
           echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-
+          poetry config virtualenvs.in-project true
 
       - name: Generate .env for application
         run: |
@@ -95,4 +89,3 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest -q
-
